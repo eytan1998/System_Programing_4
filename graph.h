@@ -14,6 +14,8 @@ typedef struct edge_ {
 
 typedef struct GRAPH_NODE_ {
     int node_id;
+    int distance;
+    int isFinished;
     struct edge_ *edges;
     struct GRAPH_NODE_ *next;
 } node, *pnode;

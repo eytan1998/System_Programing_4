@@ -38,7 +38,6 @@ int main() {
                 break;
         }
     }
-    printGraph_cmd(head);
     deleteGraph_cmd(&head);
     return 0;
 }
@@ -100,7 +99,7 @@ void delete_node_cmd(pnode *head) {
         deleteEdge(&(p->edges), getNode(head, nodeID));
         p = p->next;
     }
-    deleteAllEdges(getNode(head,nodeID)->edges);
+    deleteAllEdges(getNode(head, nodeID)->edges);
     deleteNode(head, nodeID);
 
 }
@@ -138,66 +137,48 @@ void deleteGraph_cmd(pnode *head) {
 }
 
 void shortsPath_cmd(pnode head) {
-    int length = head->node_id;
-    int *graphMatrix = malloc(length * length * sizeof(int));
-    for (int i = 0; i < length; ++i) {
-        for (int j = 0; j < length; ++j) {
-            graphMatrix[i * length + j] = INT_MAX;
-        }
-    }
-    pnode pN = head->next;
-    while (pN != NULL) {
-        pedge pE = pN->edges;
-        while (pE != NULL) {
-            graphMatrix[(pN->node_id * length) + pE->endpoint->node_id] = pE->weight;
-            pE = pE->next;
-        }
-        pN = pN->next;
-    }
+
     int sourceNode, endNode;
     scanf(" %d", &sourceNode);
     scanf(" %d", &endNode);
-    int ans = dijkstra(graphMatrix, sourceNode, endNode, length);
+    int ans = dijkstra(head, sourceNode, endNode);
     printf("Dijsktra shortest path: %d \n", ans);
 
-    free(graphMatrix);
 }
 
 void TSP_cmd(pnode head) {
-    int length = head->node_id;
-    int *graphMatrix = malloc(length * length * sizeof(int));
-    for (int i = 0; i < length; ++i) {
-        for (int j = 0; j < length; ++j) {
-            graphMatrix[i * length + j] = INT_MAX;
-        }
-    }
-    pnode pN = head->next;
-    while (pN != NULL) {
-        pedge pE = pN->edges;
-        while (pE != NULL) {
-            graphMatrix[(pN->node_id * (length - 1)) + pE->endpoint->node_id] = pE->weight;
-            pE = pE->next;
-        }
-        pN = pN->next;
-    }
 
     //TODO promition
-    int minDis = -1;
-    int times, sourceNode, endNode;
-    scanf(" %d", &times);
-    scanf(" %d", &sourceNode);
-    for (int i = 0; i < times - 1; ++i) {
-        scanf(" %d", &endNode);
-        int ans = dijkstra(graphMatrix, sourceNode, endNode, length);
-        if (ans == INT_MAX) {
-            minDis = -1;
-            break;
+    int numStations;
+    scanf(" %d", &numStations);
+    int *stations = malloc(numStations * sizeof(int));
+
+    int allMin = -1;
+    int currentMin = -1;
+    int i, j, k, temp;
+    for (i = 0; i < numStations; i++)
+        scanf(" %d", &stations[i]);
+    for (j = 1; j <= numStations; j++) {
+        for (i = 0; i < numStations - 1; i++) {
+            temp = stations[i];
+            stations[i] = stations[i + 1];
+            stations[i + 1] = temp;
+
+            for (k = 0; k < numStations - 1; k++){
+                int ans = dijkstra(head, stations[k], stations[k + 1]);
+                if (ans == -1){
+                    currentMin = -1;
+                    break;
+                }
+                currentMin += ans;
+            }
+            if(currentMin != -1 && (allMin == -1 ||currentMin < allMin)){
+                allMin = currentMin;
+            }
         }
-        minDis += ans;
-        sourceNode = endNode;
     }
-    printf("TSP shortest path: %d \n", ((minDis == -1) ? minDis : minDis + 1));
-    free(graphMatrix);
+    free(stations);
+    printf("TSP shortest path: %d \n", ((allMin == -1) ? allMin : allMin + 1));
 
 }
 

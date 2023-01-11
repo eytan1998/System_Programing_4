@@ -1,67 +1,39 @@
-
-
 #include "algo.h"
 
-// A utility function to find the vertex with minimum
-// distance value, from the set of vertices not yet included
-// in shortest path tree
-int minDistance(int dist[], bool sptSet[], int length) {
-    // Initialize min value
-    int min = INT_MAX, min_index;
-
-    for (int v = 0; v < length; v++)
-        if (sptSet[v] == false && dist[v] <= min)
-            min = dist[v], min_index = v;
-
-    return min_index;
-}
-
-
-// Function that implements Dijkstra's single source
-// shortest path algorithm for a graph represented using
-// adjacency matrix representation
-int dijkstra(int *graph, int src, int dest, int length) {
-    int dist[length]; // The output array.  dist[i] will hold the
-    // shortest
-    // distance from src to i
-
-    bool sptSet[length]; // sptSet[i] will be true if vertex i is
-    // included in shortest
-    // path tree or shortest distance from src to i is
-    // finalized
-
-    // Initialize all distances as INFINITE and stpSet[] as
-    // false
-    for (int i = 0; i < length; i++)
-        dist[i] = INT_MAX, sptSet[i] = false;
-
-    // Distance of source vertex from itself is always 0
-    dist[src] = 0;
-
-    // Find the shortest path for all vertices
-    for (int count = 0; count < length - 1; count++) {
-        // Pick the minimum distance vertex from the set of
-        // vertices not yet processed. u is always equal to
-        // src in the first iteration.
-        int u = minDistance(dist, sptSet, length);
-
-        // Mark the picked vertex as processed
-        sptSet[u] = true;
-
-        // Update dist value of the adjacent vertices of the
-        // picked vertex.
-        for (int v = 0; v < length; v++)
-
-            // Update dist[v] only if is not in sptSet,
-            // there is an edge from u to v, and total
-            // weight of path from src to  v through u is
-            // smaller than current value of dist[v]
-            if (!sptSet[v] && graph[u * length + v]
-                && dist[u] != INT_MAX
-                && dist[u] + graph[u * length + v] < dist[v])
-                dist[v] = dist[u] + graph[u * length + v];
+int dijkstra(pnode head, int src, int dest) {
+    pnode p = (head)->next;
+    pnode minDis;
+    while (p != NULL) {
+        p->isFinished = 0;
+        p->distance = -1;
+        if (p->node_id == src) {
+            p->distance = 0;
+            minDis = p;
+        }
+        p = p->next;
     }
+    while (1) {
+        pedge neber = NULL;
+        neber= minDis->edges;
+        while (neber != NULL) {
+            if (!(neber->endpoint->isFinished) && neber->endpoint->distance != -1 && neber->endpoint->distance > minDis->distance + neber->weight) {
+                neber->endpoint->distance = minDis->distance + neber->weight;
+            }
+            neber = neber->next;
+        }
+        minDis->isFinished = 1;
+        if (minDis->node_id == dest) return minDis->distance;
 
-    return dist[dest];
-    // print the constructed distance array
+        pnode temp = (head)->next;
+        minDis = NULL;
+        while (temp != NULL) {
+            if ((minDis == NULL || minDis->distance > temp->distance) && !temp->isFinished) {
+                minDis = temp;
+            }
+            temp = temp->next;
+        }
+        if (minDis == NULL)break;
+
+    }
+    return -1;
 }
