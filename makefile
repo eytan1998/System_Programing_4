@@ -2,7 +2,7 @@
 
 all: main
 
-main: main.c
+graph: main.c
 	gcc -Wall -g main.c algo.c edges.c nodes.c -o $@
 clean:
-	rm -f *.o main
+	rm -f *.o graph
