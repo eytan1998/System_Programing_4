@@ -135,6 +135,7 @@ void deleteGraph_cmd(pnode *head) {
         p = p->next;
         free(temp);
     }
+    (*head)->next = NULL;
 
 }
 
