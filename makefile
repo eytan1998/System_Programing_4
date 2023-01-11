@@ -1,6 +1,6 @@
 .Phony : all clean
 
-all: main
+all: graph
 
 graph: main.c
 	gcc -Wall -g main.c algo.c edges.c nodes.c -o $@
