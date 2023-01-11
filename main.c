@@ -19,7 +19,9 @@ int main() {
     while (flag && scanf(" %c", &choice) != EOF) {
         switch (choice) {
             case 'A':
+                if(head->next!=NULL)deleteGraph_cmd(&head);
                 build_graph_cmd(&head);
+
                 break;
             case 'B':
                 insert_node_cmd(&head);
@@ -39,6 +41,7 @@ int main() {
         }
     }
     deleteGraph_cmd(&head);
+    free(head);
     return 0;
 }
 
@@ -132,7 +135,6 @@ void deleteGraph_cmd(pnode *head) {
         p = p->next;
         free(temp);
     }
-    free(*head);
 
 }
 
