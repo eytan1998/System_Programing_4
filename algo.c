@@ -16,7 +16,9 @@ int dijkstra(pnode head, int src, int dest) {
         pedge neber = NULL;
         neber= minDis->edges;
         while (neber != NULL) {
-            if (!(neber->endpoint->isFinished) && neber->endpoint->distance != -1 && neber->endpoint->distance > minDis->distance + neber->weight) {
+            if (!(neber->endpoint->isFinished) &&
+            minDis->distance != -1 &&
+            (neber->endpoint->distance == -1 || neber->endpoint->distance > minDis->distance + neber->weight)) {
                 neber->endpoint->distance = minDis->distance + neber->weight;
             }
             neber = neber->next;
