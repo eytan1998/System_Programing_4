@@ -17,7 +17,7 @@ int main() {
     while (flag && scanf(" %c", &choice) != EOF) {
         switch (choice) {
             case 'A':
-                if(head->next!=NULL)deleteGraph_cmd(&head);
+                if (head->next != NULL)deleteGraph_cmd(&head);
                 build_graph_cmd(&head);
                 break;
             case 'B':
@@ -37,6 +37,7 @@ int main() {
                 break;
         }
     }
+    printGraph_cmd(head);
     deleteGraph_cmd(&head);
     free(head);
     return 0;
@@ -153,7 +154,6 @@ void TSP_cmd(pnode head) {
     int *stations = malloc(numStations * sizeof(int));
 
     int allMin = INF;
-    int currentMin = INF;
     int i, j, k, temp;
     for (i = 0; i < numStations; i++)
         scanf(" %d", &stations[i]);
@@ -162,16 +162,18 @@ void TSP_cmd(pnode head) {
             temp = stations[i];
             stations[i] = stations[i + 1];
             stations[i + 1] = temp;
+            int currentMin = INF;
 
-            for (k = 0; k < numStations - 1; k++){
+            for (k = 0; k < numStations - 1; k++) {
                 int ans = dijkstra(head, stations[k], stations[k + 1]);
-                if (ans == INF){
+                if (ans == INF) {
                     currentMin = INF;
                     break;
                 }
                 currentMin += ans;
             }
-            if(currentMin != INF && (allMin == INF ||currentMin < allMin)){
+
+            if (currentMin != INF && (allMin == INF || currentMin < allMin)) {
                 allMin = currentMin;
             }
         }
