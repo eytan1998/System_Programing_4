@@ -1,6 +1,7 @@
 #include "algo.h"
 
 int dijkstra(pnode head, int src, int dest) {
+    if (src == dest)return 0;
     //initialize -1 to all and 0 to s
     pnode p = (head)->next;
     pnode minDis;
