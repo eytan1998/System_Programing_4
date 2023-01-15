@@ -2,6 +2,7 @@
 #define GRAPH_
 
 #include <stdlib.h>
+#define INF (-1)
 
 typedef struct GRAPH_NODE_ *pnode;
 

@@ -9,14 +9,7 @@ pedge addEdge(pnode *mNode) {
     (*mNode)->edges = newEdge;
     return newEdge;
 }
-pedge getEdge(pedge *edges, int nodeId) {
-    pedge ans = (*edges)->next;
-    while (ans != NULL) {
-        if (ans->endpoint->node_id == nodeId) return ans;
-        ans = ans->next;
-    }
-    return NULL;
-}
+
 
 void deleteEdge(pedge *edges, pnode destNode) {
     pedge temp;

@@ -1,5 +1,4 @@
 
-
 #include "graph.h"
 
 pnode addNode(pnode *head, pnode newNode);

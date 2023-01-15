@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-
 #include "algo.h"
-#include "graph.h"
 #include "nodes.h"
 #include "edges.h"
 
@@ -21,7 +19,6 @@ int main() {
             case 'A':
                 if(head->next!=NULL)deleteGraph_cmd(&head);
                 build_graph_cmd(&head);
-
                 break;
             case 'B':
                 insert_node_cmd(&head);
@@ -97,6 +94,7 @@ void insert_node_cmd(pnode *head) {
 void delete_node_cmd(pnode *head) {
     int nodeID;
     scanf(" %d", &nodeID);
+
     pnode p = (*head)->next;
     while (p != NULL) {
         deleteEdge(&(p->edges), getNode(head, nodeID));
@@ -150,14 +148,12 @@ void shortsPath_cmd(pnode head) {
 }
 
 void TSP_cmd(pnode head) {
-
-    //TODO promition
     int numStations;
     scanf(" %d", &numStations);
     int *stations = malloc(numStations * sizeof(int));
 
-    int allMin = -1;
-    int currentMin = -1;
+    int allMin = INF;
+    int currentMin = INF;
     int i, j, k, temp;
     for (i = 0; i < numStations; i++)
         scanf(" %d", &stations[i]);
@@ -169,19 +165,19 @@ void TSP_cmd(pnode head) {
 
             for (k = 0; k < numStations - 1; k++){
                 int ans = dijkstra(head, stations[k], stations[k + 1]);
-                if (ans == -1){
-                    currentMin = -1;
+                if (ans == INF){
+                    currentMin = INF;
                     break;
                 }
                 currentMin += ans;
             }
-            if(currentMin != -1 && (allMin == -1 ||currentMin < allMin)){
+            if(currentMin != INF && (allMin == INF ||currentMin < allMin)){
                 allMin = currentMin;
             }
         }
     }
     free(stations);
-    printf("TSP shortest path: %d \n", ((allMin == -1) ? allMin : allMin + 1));
+    printf("TSP shortest path: %d \n", ((allMin == INF) ? allMin : allMin + 1));
 
 }
 
